@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#243d5a">
+<meta name="description" content="A tiny cozy bakery with berry-sized games and terrible puns.">
+<title>Bluebell Café — Today's Specials</title>
+<style>
+:root{
+  --ink:#263d59; --blue:#294563; --blue2:#456b8d; --cream:#fff4df;
+  --paper:#fff8eb; --wood:#986b4a; --wood-dark:#684631; --pink:#d9797a;
+  --berry:#6f82c4; --grape:#9278b6; --sage:#84977a; --line:#d9c7a5;
+  --shadow:0 8px 0 rgba(61,43,29,.12),0 14px 28px rgba(41,35,29,.13);
+}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font-family:Georgia,"Times New Roman",serif;background:#243d5a}
+button{font:inherit;cursor:pointer}
+.topbar{background:var(--blue);color:#fff4df;border-bottom:4px solid #1e334b;padding:14px 5vw;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-size:clamp(1.3rem,3vw,2rem);font-style:italic;letter-spacing:.02em}
+.brand span{font-style:normal;font-size:.8em}
+.nav{display:flex;gap:18px;font-size:.95rem;opacity:.95}
+.nav a{color:inherit;text-decoration:none;border-bottom:1px dashed transparent}
+.nav a:hover{border-color:currentColor}
+.scene{padding:clamp(18px,4vw,48px) 14px 54px;background:
+ radial-gradient(ellipse at 15% 15%,rgba(255,235,192,.18),transparent 25%),
+ radial-gradient(ellipse at 88% 20%,rgba(255,220,170,.18),transparent 24%),
+ linear-gradient(90deg,rgba(34,53,67,.16),transparent 18%,transparent 82%,rgba(34,53,67,.15)),
+ #d9b38b;position:relative;overflow:hidden}
+.scene:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.18;background-image:radial-gradient(#5e412b .7px,transparent .7px);background-size:7px 7px}
+.window-glow{position:absolute;top:0;left:0;right:0;height:120px;background:linear-gradient(#344d6b 0 26px,#f0c98b 26px 31px,transparent 31px);opacity:.75}
+.cafe{max-width:1050px;margin:auto;position:relative;z-index:1}
+.welcome{max-width:650px;margin:10px auto 26px;text-align:center;background:var(--paper);border:3px solid #b7a17d;border-radius:7px;padding:24px 25px 20px;box-shadow:var(--shadow);position:relative}
+.welcome:before,.welcome:after{content:"✿";position:absolute;color:var(--blue2);font-size:1.2rem;top:15px}.welcome:before{left:18px}.welcome:after{right:18px}
+.kicker{text-transform:uppercase;letter-spacing:.16em;font-size:.72rem;color:#8a6948}
+h1{font-size:clamp(2.1rem,5vw,3.5rem);font-weight:normal;font-style:italic;margin:5px 0 9px}
+.welcome p{font-size:1.05rem;line-height:1.55;margin:8px auto;max-width:480px}
+.tiny-heart{color:var(--pink);font-size:1.2rem}
+.counter{display:inline-block;background:#f1e4cc;border:1px dashed #bca77f;border-radius:30px;padding:6px 12px;font-size:.85rem;margin-top:5px}
+.counter strong{color:#9b5d5c}
+.countertop{background:var(--wood);border:7px solid var(--wood-dark);border-bottom-width:12px;border-radius:8px;padding:clamp(14px,3vw,30px);box-shadow:inset 0 3px rgba(255,255,255,.12),var(--shadow)}
+.shelf-note{background:#1e2d37;color:#fff0d7;max-width:360px;padding:14px 20px;margin:0 auto 24px;text-align:center;transform:rotate(-1deg);box-shadow:0 4px 0 #4b3325}
+.shelf-note h2{font-size:1.55rem;font-weight:normal;font-style:italic;margin:0 0 5px}
+.shelf-note p{margin:0;font-size:.95rem;line-height:1.4}
+.menu-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.game-card{background:var(--paper);border:2px solid #c9b18a;border-radius:5px;padding:15px 14px 17px;text-align:center;box-shadow:0 5px 0 rgba(57,38,23,.2);display:flex;flex-direction:column;align-items:center;min-height:330px;position:relative;transition:transform .15s}
+.game-card:nth-child(2){background:#fff0e8;border-color:#d9a4a0;transform:rotate(.6deg)}
+.game-card:nth-child(3){background:#f7f0ff;border-color:#c0add7;transform:rotate(-.5deg)}
+.game-card:hover{transform:translateY(-4px) rotate(0)}
+.game-art{height:92px;width:100%;display:flex;align-items:center;justify-content:center;font-size:4.2rem;filter:saturate(.82);position:relative}
+.game-art:after{content:"";position:absolute;bottom:5px;width:85px;height:10px;border-radius:50%;background:rgba(75,54,38,.12)}
+.doodle{position:relative;z-index:1;text-shadow:1px 1px 0 #fff, -1px 1px 0 #fff, 1px -1px 0 #fff}
+.card-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:#8d7656;margin:3px 0}
+.game-card h3{font-size:1.35rem;font-weight:normal;font-style:italic;margin:5px 0 8px}
+.game-card p{line-height:1.4;margin:0 0 10px;font-size:.95rem;max-width:250px;flex:1}
+.tag{background:#e9dfcd;border-radius:20px;padding:5px 10px;font-size:.78rem;margin-bottom:12px;color:#5a5b61}
+.play{border:0;background:var(--blue2);color:#fff7e8;padding:10px 22px;border-radius:30px;box-shadow:0 3px 0 #263d59;min-width:130px}
+.game-card:nth-child(2) .play{background:var(--pink);box-shadow:0 3px 0 #9b555b}
+.game-card:nth-child(3) .play{background:var(--grape);box-shadow:0 3px 0 #645080}
+.play:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.secret-note{margin:25px auto 0;max-width:650px;text-align:center;background:#fff0d8;border:1px dashed #b18b5f;padding:14px 20px;transform:rotate(.5deg);line-height:1.5}
+.secret-note strong{font-weight:normal;font-style:italic}
+.footer{text-align:center;color:#f6e7cd;padding:18px 12px;font-style:italic}
+.footer small{opacity:.8}
+.modal{position:fixed;inset:0;background:rgba(18,31,45,.72);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+.modal.open{display:flex}
+.game-panel{width:min(590px,100%);max-height:92vh;overflow:auto;background:var(--paper);border:4px solid #b9a17c;border-radius:9px;padding:clamp(18px,4vw,30px);box-shadow:0 18px 55px #1118;position:relative;text-align:center}
+.close{position:absolute;top:8px;right:10px;border:0;background:transparent;color:var(--ink);font-size:1.6rem}
+.game-panel h2{font-size:clamp(1.6rem,5vw,2.3rem);font-weight:normal;font-style:italic;margin:8px 25px 8px}
+.game-panel p{line-height:1.5}
+.game-display{background:#f2e6cf;border:1px dashed #c1a77f;border-radius:7px;padding:18px;min-height:150px;margin:14px 0}
+.big-emoji{font-size:3.6rem}
+.action{background:var(--blue);color:#fff4df;border:0;border-radius:25px;padding:10px 18px;margin:5px}
+.action.secondary{background:#e5d8c0;color:var(--ink)}
+.feedback{min-height:28px;color:#8d5755;font-style:italic;margin:10px 0}
+.berry-field{height:155px;position:relative;background:#e8dfcc;border-radius:6px;overflow:hidden;margin:12px 0;border:1px solid #d0bd98}
+.berry-target{position:absolute;border:0;background:transparent;font-size:2.5rem;transition:left .12s,top .12s;line-height:1}
+.jar-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}
+.jar{font-size:2.5rem;border:2px solid #d4bba0;background:#fff8e9;border-radius:9px;padding:10px;min-width:75px}
+.jar.selected{outline:3px solid #d9797a;background:#ffe4df}
+.jar.correct{background:#e1ecd9;border-color:#84977a}
+.choice-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.choice{background:#fff8e9;border:1px solid #c9b18a;border-radius:7px;padding:12px;min-width:115px;flex:1}
+.choice:hover{background:#f1e4cc}
+.progress{height:6px;background:#e3d5bc;border-radius:9px;overflow:hidden;margin:12px 0}
+.progress span{display:block;height:100%;width:0;background:#84977a;transition:width .2s}
+.result{font-size:1.1rem;background:#f8e7dd;padding:13px;border-radius:7px;margin:14px 0}
+.ask-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+@media(max-width:700px){.menu-grid{grid-template-columns:1fr;max-width:430px;margin:auto}.game-card{min-height:280px}.game-card:nth-child(2),.game-card:nth-child(3){transform:none}.nav{gap:11px;font-size:.85rem}.topbar{justify-content:center}.countertop{padding:13px}.welcome{padding:22px 16px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span>✿</span> Bluebell Café <span>✿</span></div>
+  <nav class="nav" aria-label="Main navigation"><a href="#home">Home</a><a href="#menu">Menu</a><a href="#games">Games</a><a href="#about">About</a></nav>
+</header>
+<main class="scene" id="home">
+  <div class="window-glow"></div>
+  <div class="cafe">
+    <section class="welcome">
+      <div class="kicker" id="welcomeKicker">Freshly baked nonsense</div>
+      <h1 id="cafeTitle">Welcome to Bluebell Café</h1>
+      <p id="welcomeText">A cozy little bakery, a few berry buddies, and several absolutely unnecessary puns.</p>
+      <p><span class="tiny-heart">♥</span></p>
+      <div class="counter">Today's mood: <strong>extra sweet</strong> · Coffee-free, pun-full</div>
+    </section>
+    <section class="countertop" id="menu">
+      <div class="shelf-note"><h2>Today's Specials</h2><p>Pick a tiny game. No experience required. Questionable pun quality guaranteed.</p></div>
+      <div class="menu-grid" id="menuGrid"></div>
+      <div class="secret-note" id="about"><strong>P.S.</strong> There's one more special order waiting for you...<br><small>(It's not on the menu. Very exclusive. Extremely suspicious.)</small></div>
+    </section>
+  </div>
+</main>
+<footer class="footer">Good things are sweeter together. <br><small>Made with questionable baking skills and an unreasonable number of berries.</small></footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="gameTitle">
+  <div class="game-panel">
+    <button class="close" id="closeBtn" aria-label="Close game">×</button>
+    <div class="kicker" id="modalKicker">A Bluebell Café special</div>
+    <h2 id="gameTitle">Game</h2>
+    <p id="gameIntro"></p>
+    <div class="game-display" id="gameDisplay"></div>
+    <div class="feedback" id="feedback" aria-live="polite"></div>
+    <div id="gameControls"></div>
+  </div>
+</div>
+
+<script>
+/* ===================== EASY CUSTOMIZATION =====================
+   Add or edit game cards in GAMES below. The included games have
+   their own little mechanics; to add a new one, duplicate a card
+   and use a supported type: "dash", "jelly", or "grape".
+   Change the final invitation in CONFIG near the bottom.
+================================================================ */
+const CONFIG = {
+  cafeName: "Bluebell Café",
+  welcomeKicker: "Freshly baked nonsense",
+  welcomeText: "A cozy little bakery, a few berry buddies, and several absolutely unnecessary puns.",
+  secretNote: "There's one more special order waiting for you...",
+  dateQuestion: "Okay, one last question for you...",
+  dateMessage: "Would you let me take you on a date? 💙",
+  yesButton: "I'd like that!",
+  maybeButton: "Let's talk about it",
+  yesReply: "YAY! 🫐 Consider this café officially in celebration mode. I'll message you so we can figure out a day 💙",
+  maybeReply: "Of course! No pressure at all 💙 Thanks for playing my tiny silly game."
+};
+
+const GAMES = [
+  { id:"dash", title:"The Berry Dash", type:"dash", art:"🫐", label:"Quick reaction game",
+    description:"A blueberry has escaped the pastry counter. This is a berry serious situation.",
+    pun:"You must be berry special." },
+  { id:"jelly", title:"Jelly Jumble", type:"jelly", art:"🍓", label:"Tiny puzzle",
+    description:"The jellies got mixed up. Put the strawberry, grape, and blueberry in order before the baker notices.",
+    pun:"I find you very a-peel-ing. (The baker wrote that. I cannot be held responsible.)" },
+  { id:"grape", title:"The Grape Escape", type:"grape", art:"🍇", label:"Choose-your-own chaos",
+    description:"A grape has been locked in the kitchen. Your decisions will determine its extremely important destiny.",
+    pun:"I hope this isn't too corny, but I think we'd make a grape pair." }
+];
+
+const $ = id => document.getElementById(id);
+$("cafeTitle").textContent = `Welcome to ${CONFIG.cafeName}`;
+$("welcomeKicker").textContent = CONFIG.welcomeKicker;
+$("welcomeText").textContent = CONFIG.welcomeText;
+$("about").innerHTML = `<strong>P.S.</strong> ${CONFIG.secretNote}<br><small>(It's not on the menu. Very exclusive. Extremely suspicious.)</small>`;
+document.title = `${CONFIG.cafeName} — Today's Specials`;
+
+const gameGrid = $("menuGrid");
+GAMES.forEach((game, i) => {
+  const card = document.createElement("article");
+  card.className = "game-card";
+  card.innerHTML = `<div class="game-art"><span class="doodle">${game.art}</span></div>
+    <div class="card-label">Special no. ${i+1}</div><h3>${game.title}</h3>
+    <p>${game.description}</p><div class="tag">${game.label}</div>
+    <button class="play" data-game="${game.id}">Play <span aria-hidden="true">→</span></button>`;
+  gameGrid.appendChild(card);
+  card.querySelector("button").addEventListener("click", () => startGame(game));
+});
+
+const modal = $("modal");
+let currentGame = null, dashCount = 0, dashTimer = null, jellyOrder = [], jellySelected = [], grapeStep = 0;
+function showModal(game) {
+  currentGame = game; $("gameTitle").textContent = game.title;
+  $("modalKicker").textContent = `${CONFIG.cafeName} · special of the day`;
+  $("gameIntro").textContent = game.description;
+  $("gameDisplay").innerHTML = ""; $("feedback").textContent = ""; $("gameControls").innerHTML = "";
+  modal.classList.add("open"); document.body.style.overflow = "hidden";
+}
+function closeModal() { clearInterval(dashTimer); modal.classList.remove("open"); document.body.style.overflow = ""; }
+$("closeBtn").addEventListener("click", closeModal);
+modal.addEventListener("click", e => { if(e.target === modal) closeModal(); });
+document.addEventListener("keydown", e => { if(e.key === "Escape") closeModal(); });
+function button(text, fn, secondary=false) {
+  const b=document.createElement("button"); b.className="action"+(secondary?" secondary":""); b.textContent=text; b.addEventListener("click",fn); return b;
+}
+function startGame(game) {
+  showModal(game);
+  if(game.type==="dash") playDash(game);
+  if(game.type==="jelly") playJelly(game);
+  if(game.type==="grape") playGrape(game);
+}
+function finishGame(game) {
+  clearInterval(dashTimer);
+  $("gameDisplay").innerHTML = `<div class="big-emoji">${game.art}</div><div class="result">${game.pun}</div><p>Official café report: you did amazing. The berry is emotionally grateful.</p>`;
+  $("feedback").textContent = "Achievement unlocked: certified berry buddy.";
+  $("gameControls").append(button("Back to the menu",closeModal,true),button("One last special…",showDateAsk));
+}
+function playDash(game) {
+  dashCount=0;
+  $("gameDisplay").innerHTML = `<p>Tap the blueberry <strong>5 times</strong> before it escapes. It is very fast for someone with no legs.</p><div class="progress"><span id="dashProgress"></span></div><div class="berry-field" id="berryField"><button class="berry-target" id="berryTarget" aria-label="Catch blueberry">🫐</button></div>`;
+  $("gameControls").append(button("I'm ready", () => {
+    const target=$("berryTarget"), field=$("berryField");
+    $("feedback").textContent="GO GO GO, LITTLE BERRY DETECTIVE!";
+    target.style.left="10px";target.style.top="10px";
+    function moveBerry() {
+      const maxX=Math.max(0,field.clientWidth-48), maxY=Math.max(0,field.clientHeight-48);
+      target.style.left=Math.floor(Math.random()*maxX)+"px";
+      target.style.top=Math.floor(Math.random()*maxY)+"px";
+    }
+    target.addEventListener("click", hitBerry);
+    function hitBerry(e) {
+      e.stopPropagation(); dashCount++;
+      $("dashProgress").style.width=(dashCount/5*100)+"%";
+      if(dashCount>=5) {target.removeEventListener("click",hitBerry);finishGame(game);}
+      else { $("feedback").textContent=["Nice catch!","The berry is getting nervous.","You're faster than a blueberry with places to be.","Almost!"][Math.floor(Math.random()*4)]; moveBerry(); }
+    }
+    moveBerry();
+    dashTimer=setInterval(moveBerry,850);
+    $("gameControls").innerHTML="";
+    $("gameControls").append(button("Give up (the berry wins)",()=>{clearInterval(dashTimer);$("feedback").textContent="The blueberry has requested a tiny victory parade.";finishGame(game);},true));
+  }));
+}
+function playJelly(game) {
+  const correct=["🍓","🍇","🫐"];
+  jellyOrder=[...correct].sort(()=>Math.random()-.5);
+  while(jellyOrder.join("")===correct.join("")) jellyOrder=[...correct].sort(()=>Math.random()-.5);
+  jellySelected=[];
+  $("gameDisplay").innerHTML=`<p>Tap the jars in this order: <strong>strawberry → grape → blueberry</strong>.</p><div class="jar-row" id="jarRow"></div><p><small>Hint: the baker says this is “the jam-packed correct answer.” The baker should not write jokes.</small></p>`;
+  const row=$("jarRow");
+  jellyOrder.forEach((fruit,i)=>{
+    const b=document.createElement("button");b.className="jar";b.textContent=fruit;b.setAttribute("aria-label","Jelly jar");
+    b.addEventListener("click",()=>{
+      if(b.classList.contains("selected")) return;
+      b.classList.add("selected"); jellySelected.push({fruit,b});
+      if(jellySelected.length===3){
+        if(jellySelected.map(x=>x.fruit).join("")===correct.join("")){
+          jellySelected.forEach(x=>x.b.classList.add("correct"));$("feedback").textContent="Perfect! The jellies have found their jam.";
+          setTimeout(()=>finishGame(game),650);
+        } else {
+          $("feedback").textContent="Hmm. That order is a little... un-jelly-able. Try again!";
+          setTimeout(()=>{jellySelected=[];[...row.children].forEach(x=>x.classList.remove("selected"));},700);
+        }
+      }
+    });row.appendChild(b);
+  });
+  $("gameControls").append(button("Mix up the jars",()=>playJelly(game),true));
+}
+function playGrape(game) {
+  grapeStep=0;
+  const scenes=[
+    {emoji:"🍇",text:"A grape is trapped in the bakery after closing. The door is locked. What should it do?",choices:[["Ask the croissant for help 🥐",1],["Pretend to be a raisin 🕶️",2],["Start a tiny grape protest ✊",3]]},
+    {emoji:"🥐",text:"The croissant agrees to help, but demands payment. What can a grape afford?",choices:[["One crumb and a heartfelt thank-you",4],["A luxury sports car",5],["A motivational speech",4]]},
+    {emoji:"🕶️",text:"The grape puts on sunglasses. The baker squints. “You look familiar...”",choices:[["Say ‘I'm raisin the bar’",4],["Do a suspicious little dance",5],["Ask for a job",4]]},
+    {emoji:"✊",text:"The grape's protest has attracted two blueberries and a confused muffin.",choices:[["Negotiate a snack treaty",4],["Demand a tiny megaphone",5],["Offer everyone jam",4]]},
+    {emoji:"🚪",text:"The plan works! The kitchen door clicks open. The grape is free!",choices:[["Celebrate with a tiny victory jig",6],["Immediately get lost in the bakery",6]]},
+    {emoji:"🧁",text:"A muffin has joined the mission. It has no plan, but excellent vibes.",choices:[["Follow the vibes",6],["Ask the muffin for directions",6]]},
+    {emoji:"🍇",text:"THE GRAPE HAS ESCAPED. The bakery has learned nothing, but the grape has a story.",choices:[["Collect your extremely unofficial award",7]]}
+  ];
+  function render(step){
+    grapeStep=step;const s=scenes[step];
+    $("gameDisplay").innerHTML=`<div class="big-emoji">${s.emoji}</div><p>${s.text}</p><div class="choice-row" id="choices"></div>`;
+    s.choices.forEach(([label,next])=>{const b=button(label,()=>render(next),true);b.className="choice";$("choices").appendChild(b);});
+    $("feedback").textContent="";
+    if(step===7){$("gameDisplay").innerHTML=`<div class="big-emoji">🏆🍇</div><div class="result">Awarded: Honorary Bakery Escape Artist</div><p>The grape would like you to know that it couldn't have done it without your questionable leadership.</p>`;$("gameControls").innerHTML="";$("gameControls").append(button("Collect pun & award",()=>finishGame(game)));}
+  }
+  render(0);
+}
+function showDateAsk() {
+  clearInterval(dashTimer);
+  $("gameTitle").textContent=CONFIG.dateQuestion;
+  $("modalKicker").textContent="One very special order";
+  $("gameIntro").textContent="The baker has been saving this one for you.";
+  $("gameDisplay").innerHTML=`<div class="big-emoji">🫐 💌 🍓</div><div class="result">${CONFIG.dateMessage}</div><p>Absolutely no pressure — I just thought this was a cute way to ask. 💙</p>`;
+  $("feedback").textContent="";
+  $("gameControls").innerHTML="";
+  const yes=button(CONFIG.yesButton,()=>reply(CONFIG.yesReply));
+  const maybe=button(CONFIG.maybeButton,()=>reply(CONFIG.maybeReply),true);
+  $("gameControls").append(yes,maybe);
+}
+function reply(message) {
+  $("gameDisplay").innerHTML=`<div class="big-emoji">💌</div><div class="result">${message}</div>`;
+  $("gameControls").innerHTML="";$("feedback").textContent="(This stays right here in the browser — it won't notify you.)";
+  $("gameControls").append(button("Back to the café",closeModal,true));
+}
+</script>
+</body>
+</html>
