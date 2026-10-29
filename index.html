@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#c8e7f5">
+  <title>Bluebell Café — A tiny surprise</title>
+  <style>
+    /*
+      BLUEBELL CAFÉ TEMPLATE
+      Quick edits:
+      1) Change the words in the CONFIG object near the bottom of this file.
+      2) Change the colors in :root below.
+      3) Replace the image URLs in CONFIG.images (or leave them blank for illustrated CSS backgrounds).
+    */
+    :root {
+      --sky: #dff3fb;
+      --blue: #8cc9e8;
+      --blue-deep: #315d80;
+      --navy: #263d58;
+      --cream: #fffaf0;
+      --pink: #f7cbd7;
+      --gold: #f3d58a;
+      --ink: #30435a;
+      --card: rgba(255, 250, 240, .94);
+      --shadow: 0 18px 45px rgba(48, 67, 90, .16);
+    }
+
+    * { box-sizing: border-box; }
+    html { min-height: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: ui-rounded, "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 12% 15%, rgba(255,255,255,.9) 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 22%, rgba(255,255,255,.9) 0 2px, transparent 3px),
+        linear-gradient(165deg, var(--sky), #f9f0f4 58%, #f9e8d7);
+      background-size: 110px 110px, 140px 140px, cover;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .5;
+      background-image: var(--page-image, none);
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+    }
+    button { font: inherit; cursor: pointer; }
+    button:focus-visible { outline: 3px solid var(--blue-deep); outline-offset: 4px; }
+    .scene {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 22px 14px 34px;
+      position: relative;
+      isolation: isolate;
+    }
+    .scene::before, .scene::after {
+      content: "✦";
+      position: fixed;
+      color: rgba(255,255,255,.85);
+      font-size: 25px;
+      animation: twinkle 2.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .scene::before { top: 9%; left: 8%; }
+    .scene::after { top: 18%; right: 9%; animation-delay: 1s; content: "❄"; }
+    .window-lights {
+      position: fixed; inset: auto 0 0; height: 12px;
+      background: repeating-linear-gradient(90deg, transparent 0 22px, rgba(255,255,255,.6) 22px 24px);
+      opacity: .5; pointer-events: none;
+    }
+    .cafe {
+      width: min(100%, 540px);
+      border: 3px solid rgba(255,255,255,.86);
+      border-radius: 30px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+      backdrop-filter: blur(8px);
+    }
+    .awning {
+      padding: 12px 16px;
+      background: repeating-linear-gradient(90deg, var(--blue) 0 42px, #f9fbff 42px 84px);
+      border-bottom: 3px solid rgba(255,255,255,.9);
+      text-align: center;
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    .content { padding: clamp(22px, 6vw, 34px); text-align: center; }
+    .eyebrow {
+      color: var(--blue-deep);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin: 0 0 12px;
+    }
+    h1, h2 { color: var(--navy); line-height: 1.08; margin: 0 0 13px; }
+    h1 { font-size: clamp(30px, 7vw, 44px); }
+    h2 { font-size: clamp(24px, 5vw, 32px); }
+    p { line-height: 1.55; margin: 10px 0; }
+    .sub { max-width: 390px; margin: 0 auto 20px; }
+    .art {
+      width: min(100%, 330px);
+      height: 170px;
+      margin: 0 auto 18px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, #eaf8ff, #fbe9ed);
+      border: 2px solid white;
+      overflow: hidden;
+      position: relative;
+    }
+    .art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .art .emoji { font-size: 76px; filter: drop-shadow(0 6px 2px rgba(48,67,90,.12)); animation: bob 2.6s ease-in-out infinite; }
+    .art .tiny { position: absolute; font-size: 23px; animation: twinkle 2s ease-in-out infinite; }
+    .art .t1 { top: 15px; left: 22px; }
+    .art .t2 { right: 23px; bottom: 17px; animation-delay: .7s; }
+    .buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 23px; }
+    .btn {
+      border: 0; border-radius: 999px; padding: 13px 19px; min-height: 46px;
+      background: var(--blue-deep); color: white; font-weight: 800;
+      box-shadow: 0 5px 0 rgba(38,61,88,.15);
+      transition: transform .16s ease, filter .16s ease;
+    }
+    .btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .btn:active { transform: translateY(1px); }
+    .btn.secondary { background: white; color: var(--navy); border: 2px solid #d5e8f2; box-shadow: none; }
+    .btn.pink { background: #d77e9a; }
+    .menu-card {
+      background: #fff;
+      border: 2px dashed #b5d9eb;
+      border-radius: 18px;
+      padding: 17px;
+      margin: 18px auto 0;
+      max-width: 390px;
+    }
+    .menu-card .label { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 900; color: #6a94b0; }
+    .pun { font-size: 19px; font-weight: 800; color: var(--navy); margin: 10px 0 6px; }
+    .small { font-size: 13px; color: #66788c; }
+    .progress { display: flex; justify-content: center; gap: 7px; margin: 0 0 18px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #d5e8f2; }
+    .dot.active { background: var(--blue-deep); transform: scale(1.2); }
+    .runway {
+      height: 125px; max-width: 390px; margin: 17px auto 4px;
+      border-radius: 18px; background: linear-gradient(#e6f7ff, #fff5ed);
+      border: 2px dashed #b5d9eb; position: relative; overflow: hidden;
+      touch-action: manipulation;
+    }
+    .runaway {
+      position: absolute; left: 12%; top: 35px; font-size: 43px; border: 0; background: transparent;
+      padding: 0; line-height: 1; transition: left .18s ease, top .18s ease; user-select: none;
+    }
+    .hint { font-size: 12px; color: #71849a; }
+    .final-note {
+      background: #fff;
+      border: 2px solid #e8d9e9;
+      border-radius: 20px;
+      padding: 22px 17px;
+      margin-top: 18px;
+    }
+    .heart { font-size: 32px; animation: bob 2s ease-in-out infinite; }
+    .footer { padding: 0 18px 18px; font-size: 11px; color: #8291a1; text-align: center; }
+    .hidden { display: none !important; }
+    .pop { animation: pop .38s cubic-bezier(.2,1.4,.4,1) both; }
+    .shake { animation: wiggle .35s ease-in-out; }
+    @keyframes bob { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-7px) rotate(2deg); } }
+    @keyframes twinkle { 0%,100% { opacity: .5; transform: scale(.85) rotate(0); } 50% { opacity: 1; transform: scale(1.12) rotate(12deg); } }
+    @keyframes pop { from { opacity: 0; transform: scale(.92) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    @keyframes wiggle { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-4deg); } 75% { transform: rotate(4deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="scene">
+    <div class="cafe" aria-live="polite">
+      <div class="awning" id="awning">The Bluebell Café · est. whenever</div>
+
+      <section class="content" id="screen-welcome">
+        <p class="eyebrow" id="welcomeEyebrow">A tiny autumn-winter adventure</p>
+        <div class="art" id="welcomeArt">
+          <span class="tiny t1">✦</span><span class="emoji" id="welcomeEmoji">🏡</span><span class="tiny t2">❄</span>
+        </div>
+        <h1 id="welcomeTitle">Welcome to the Bluebell Café</h1>
+        <p class="sub" id="welcomeText">Fresh treats, questionable puns, and one tiny mystery on today's menu.</p>
+        <div class="buttons">
+          <button class="btn" id="startBtn">Come on in →</button>
+        </div>
+      </section>
+
+      <section class="content hidden" id="screen-game">
+        <div class="progress" aria-label="Game progress">
+          <span class="dot active" id="dot1"></span><span class="dot" id="dot2"></span><span class="dot" id="dot3"></span>
+        </div>
+        <p class="eyebrow" id="gameEyebrow">Today's special</p>
+        <div class="art" id="gameArt">
+          <span class="tiny t1">✦</span><span class="emoji" id="gameEmoji">🫐</span><span class="tiny t2">♡</span>
+        </div>
+        <h2 id="gameTitle">Catch the runaway blueberry!</h2>
+        <p class="sub" id="gameText">It has places to be and absolutely no manners.</p>
+        <div id="gameArea">
+          <div class="runway" id="runway">
+            <button class="runaway" id="runaway" aria-label="Catch the blueberry">🫐</button>
+          </div>
+          <p class="hint" id="gameHint">Tap the blueberry to catch it.</p>
+        </div>
+        <div class="menu-card hidden" id="punCard">
+          <div class="label" id="punLabel">Pun of the day</div>
+          <p class="pun" id="punQuestion"></p>
+          <p id="punAnswer"></p>
+          <p class="small" id="punReaction"></p>
+        </div>
+        <div class="buttons">
+          <button class="btn hidden" id="nextBtn">Next order →</button>
+        </div>
+      </section>
+
+      <section class="content hidden" id="screen-final">
+        <p class="eyebrow" id="finalEyebrow">One last thing...</p>
+        <div class="art" id="finalArt">
+          <span class="tiny t1">✦</span><span class="emoji" id="finalEmoji">🍫</span><span class="tiny t2">❄</span>
+        </div>
+        <h2 id="finalTitle">Okay, real talk.</h2>
+        <p class="sub" id="finalIntro">You've survived the puns. You deserve a proper question.</p>
+        <div class="final-note">
+          <div class="heart" id="finalHeart">🩵</div>
+          <h2 id="finalQuestion">Would you let me take you on a date?</h2>
+          <p id="finalSubtext">Just us, something fun, and a chance to get to know each other better.</p>
+        </div>
+        <div class="buttons">
+          <button class="btn pink" id="yesBtn">I'd like that! 🩵</button>
+          <button class="btn secondary" id="talkBtn">Let's talk about it</button>
+        </div>
+        <p class="small hidden" id="responseMessage"></p>
+      </section>
+
+      <div class="footer" id="footerText">Made with a pinch of whimsy and questionable baking skills.</div>
+    </div>
+    <div class="window-lights"></div>
+  </main>
+
+  <script>
+    /*
+      ✨ PERSONALIZE YOUR SITE HERE ✨
+      Edit the text between quotation marks. Keep the quotation marks.
+      You can change emojis too. For actual background pictures, paste an image URL into
+      images.page / images.welcome / images.game / images.final below.
+    */
+    const CONFIG = {
+      cafeName: "The Bluebell Café",
+      colors: {
+        sky: "#dff3fb",
+        blue: "#8cc9e8",
+        blueDeep: "#315d80",
+        navy: "#263d58",
+        cream: "#fffaf0",
+        pink: "#d77e9a",
+        ink: "#30435a"
+      },
+      images: {
+        page: "",       // Optional full-page background image URL
+        welcome: "",    // Optional image URL for the welcome screen
+        game: "",       // Optional image URL for the mini-game screen
+        final: ""       // Optional image URL for the final question screen
+      },
+      welcome: {
+        eyebrow: "A tiny autumn-winter adventure",
+        title: "Welcome to the Bluebell Café",
+        text: "Fresh treats, questionable puns, and one tiny mystery on today's menu.",
+        emoji: "🏡",
+        button: "Come on in →"
+      },
+      game: {
+        eyebrow: "Today's special",
+        title: "Catch the runaway blueberry!",
+        text: "It has places to be and absolutely no manners.",
+        catchHint: "Tap the blueberry to catch it.",
+        caughtTitle: "Berry impressive.",
+        caughtText: "You caught it! The café staff are berry grateful.",
+        nextButton: "Next order →",
+        emoji: "🫐",
+        catchEmoji: "🫐",
+        // Three short pun moments, shown in order after the catch.
+        puns: [
+          {
+            label: "Pun #1 · Freshly picked",
+            question: "Why did the blueberry blush?",
+            answer: "Because it saw the muffin it liked. 🫐",
+            reaction: "Okay, that one was berry cheesy."
+          },
+          {
+            label: "Pun #2 · From the bakery",
+            question: "What did the cookie say to the other cookie?",
+            answer: "“You’re one smart cookie.” 🍪",
+            reaction: "The baker has requested better material."
+          },
+          {
+            label: "Pun #3 · The mystery order",
+            question: "What do you call a very sweet date?",
+            answer: "Hopefully... ours? 👀",
+            reaction: "Wait. That sounded suspiciously like a clue..."
+          }
+        ]
+      },
+      final: {
+        eyebrow: "One last thing...",
+        title: "Okay, real talk.",
+        intro: "You've survived the puns. You deserve a proper question.",
+        emoji: "🍫",
+        heart: "🩵",
+        question: "Would you let me take you on a date?",
+        subtext: "Just us, something fun, and a chance to get to know each other better.",
+        yesButton: "I'd like that! 🩵",
+        talkButton: "Let's talk about it",
+        yesResponse: "Yay! 🩵 Let's pick something fun together.",
+        talkResponse: "Of course — no pressure. You can tell me what you're thinking. 🩵"
+      },
+      footer: "Made with a pinch of whimsy and questionable baking skills."
+    };
+
+    const $ = (id) => document.getElementById(id);
+    let punIndex = 0;
+    let caught = false;
+
+    // Apply colors and the optional background image.
+    document.documentElement.style.setProperty("--sky", CONFIG.colors.sky);
+    document.documentElement.style.setProperty("--blue", CONFIG.colors.blue);
+    document.documentElement.style.setProperty("--blue-deep", CONFIG.colors.blueDeep);
+    document.documentElement.style.setProperty("--navy", CONFIG.colors.navy);
+    document.documentElement.style.setProperty("--cream", CONFIG.colors.cream);
+    document.documentElement.style.setProperty("--pink", CONFIG.colors.pink);
+    document.documentElement.style.setProperty("--ink", CONFIG.colors.ink);
+    if (CONFIG.images.page) document.documentElement.style.setProperty("--page-image", `url("${CONFIG.images.page}")`);
+
+    function setArtImage(artId, imageUrl, emojiId, emoji) {
+      const art = $(artId);
+      const oldImg = art.querySelector("img");
+      if (oldImg) oldImg.remove();
+      $(emojiId).textContent = emoji;
+      if (imageUrl) {
+        const img = document.createElement("img");
+        img.src = imageUrl;
+        img.alt = "";
+        art.insertBefore(img, art.firstChild);
+        $(emojiId).classList.add("hidden");
+      } else {
+        $(emojiId).classList.remove("hidden");
+      }
+    }
+
+    function applyConfig() {
+      $("awning").textContent = `${CONFIG.cafeName} · est. whenever`;
+      $("welcomeEyebrow").textContent = CONFIG.welcome.eyebrow;
+      $("welcomeTitle").textContent = CONFIG.welcome.title;
+      $("welcomeText").textContent = CONFIG.welcome.text;
+      $("welcomeEmoji").textContent = CONFIG.welcome.emoji;
+      $("startBtn").textContent = CONFIG.welcome.button;
+      setArtImage("welcomeArt", CONFIG.images.welcome, "welcomeEmoji", CONFIG.welcome.emoji);
+
+      $("gameEyebrow").textContent = CONFIG.game.eyebrow;
+      $("gameTitle").textContent = CONFIG.game.title;
+      $("gameText").textContent = CONFIG.game.text;
+      $("gameHint").textContent = CONFIG.game.catchHint;
+      $("gameEmoji").textContent = CONFIG.game.emoji;
+      $("runaway").textContent = CONFIG.game.catchEmoji;
+      setArtImage("gameArt", CONFIG.images.game, "gameEmoji", CONFIG.game.emoji);
+
+      $("finalEyebrow").textContent = CONFIG.final.eyebrow;
+      $("finalTitle").textContent = CONFIG.final.title;
+      $("finalIntro").textContent = CONFIG.final.intro;
+      $("finalEmoji").textContent = CONFIG.final.emoji;
+      $("finalHeart").textContent = CONFIG.final.heart;
+      $("finalQuestion").textContent = CONFIG.final.question;
+      $("finalSubtext").textContent = CONFIG.final.subtext;
+      $("yesBtn").textContent = CONFIG.final.yesButton;
+      $("talkBtn").textContent = CONFIG.final.talkButton;
+      $("footerText").textContent = CONFIG.footer;
+      setArtImage("finalArt", CONFIG.images.final, "finalEmoji", CONFIG.final.emoji);
+    }
+
+    function showScreen(screenId) {
+      ["screen-welcome", "screen-game", "screen-final"].forEach(id => $(id).classList.add("hidden"));
+      $(screenId).classList.remove("hidden");
+      $(screenId).classList.remove("pop");
+      void $(screenId).offsetWidth;
+      $(screenId).classList.add("pop");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function moveBlueberry() {
+      const runway = $("runway");
+      const berry = $("runaway");
+      const maxLeft = Math.max(4, runway.clientWidth - berry.offsetWidth - 8);
+      const maxTop = Math.max(4, runway.clientHeight - berry.offsetHeight - 4);
+      berry.style.left = `${Math.floor(4 + Math.random() * (maxLeft - 4))}px`;
+      berry.style.top = `${Math.floor(4 + Math.random() * (maxTop - 4))}px`;
+    }
+
+    function showPun(index) {
+      const pun = CONFIG.game.puns[index];
+      $("punLabel").textContent = pun.label;
+      $("punQuestion").textContent = pun.question;
+      $("punAnswer").textContent = pun.answer;
+      $("punReaction").textContent = pun.reaction;
+      $("punCard").classList.remove("hidden");
+      $("punCard").classList.add("pop");
+      $("gameTitle").textContent = index === 2 ? "A suspiciously specific question..." : CONFIG.game.caughtTitle;
+      $("gameText").textContent = index === 2 ? "Hmm. The café seems to be trying to tell you something." : CONFIG.game.caughtText;
+      $("gameArea").classList.add("hidden");
+      $("nextBtn").classList.remove("hidden");
+      $("nextBtn").textContent = index === CONFIG.game.puns.length - 1 ? "Open the mystery order →" : CONFIG.game.nextButton;
+      ["dot1", "dot2", "dot3"].forEach((id, i) => $(id).classList.toggle("active", i <= index));
+    }
+
+    $("startBtn").addEventListener("click", () => {
+      showScreen("screen-game");
+      $("gameArea").classList.remove("hidden");
+      $("punCard").classList.add("hidden");
+      $("nextBtn").classList.add("hidden");
+      caught = false;
+      // Give the blueberry one quick, silly escape.
+      setTimeout(moveBlueberry, 180);
+    });
+
+    $("runaway").addEventListener("pointerenter", () => {
+      if (!caught && window.matchMedia("(hover: hover)").matches) moveBlueberry();
+    });
+    $("runaway").addEventListener("click", () => {
+      if (caught) return;
+      caught = true;
+      $("runaway").classList.add("shake");
+      $("gameHint").textContent = CONFIG.game.caughtText;
+      setTimeout(() => showPun(punIndex), 350);
+    });
+
+    $("nextBtn").addEventListener("click", () => {
+      if (punIndex < CONFIG.game.puns.length - 1) {
+        punIndex++;
+        $("punCard").classList.add("hidden");
+        $("gameArea").classList.remove("hidden");
+        $("gameTitle").textContent = punIndex === 2 ? "One last little order..." : CONFIG.game.title;
+        $("gameText").textContent = punIndex === 2 ? "Tap the blueberry again to reveal the final pun." : CONFIG.game.text;
+        $("gameHint").textContent = CONFIG.game.catchHint;
+        $("runaway").classList.remove("shake");
+        caught = false;
+        moveBlueberry();
+      } else {
+        showScreen("screen-final");
+      }
+    });
+
+    $("yesBtn").addEventListener("click", () => {
+      $("responseMessage").textContent = CONFIG.final.yesResponse;
+      $("responseMessage").classList.remove("hidden");
+      $("yesBtn").classList.add("hidden");
+      $("talkBtn").classList.add("hidden");
+      $("finalHeart").textContent = "💙✨";
+    });
+    $("talkBtn").addEventListener("click", () => {
+      $("responseMessage").textContent = CONFIG.final.talkResponse;
+      $("responseMessage").classList.remove("hidden");
+      $("yesBtn").classList.add("hidden");
+      $("talkBtn").classList.add("hidden");
+    });
+
+    applyConfig();
+  </script>
+</body>
+</html>
